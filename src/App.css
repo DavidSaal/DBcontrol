@@ -1,0 +1,17 @@
+.scrolller {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.zoom {
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.zoom:hover {
+  transform: scale(1.2);
+}
+.fs-8 {
+  font-size: 0.8rem;
+}
+input {
+  width: 50%;
+}
