@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { CSVLink } from "react-csv";
 import Modal from "./components/Modal";
+import Filter from "./components/Filter";
+import Header from "./components/Header";
+import AddRow from "./components/AddRow";
+import Fields from "./components/Fields";
 
 import "./App.css";
 
@@ -104,62 +107,12 @@ function App() {
 
   return (
     <div className="container">
-      <div className="text-center my-5">
-        <div className="card shadow">
-          <div className="card-body">
-            <h1 className="display-5">Data List</h1>
-          </div>
-        </div>
-      </div>
+      <Header />
       <div className="card p-3">
         <table className="table">
           <thead>
-            <tr>
-              <th>
-                <h4 className="fs-5 mb-1">Filter</h4>
-              </th>
-
-              <td>
-                <input
-                  type="text"
-                  name="cName"
-                  className="w-50 shadow-sm btn-outline-success"
-                  onChange={handleFilterRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="pName"
-                  className="w-50 shadow-sm btn-outline-success"
-                  onChange={handleFilterRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="type"
-                  className="w-50 shadow-sm btn-outline-success"
-                  onChange={handleFilterRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="mpr"
-                  className="w-50 shadow-sm btn-outline-success"
-                  onChange={handleFilterRowValues}
-                />
-              </td>
-            </tr>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Customer name</th>
-              <th scope="col">Partner name</th>
-              <th scope="col">Type of work</th>
-              <th scope="col">N° MPR file</th>
-              <th scope="col"></th>
-            </tr>
+            <Filter handleFilterRowValues={handleFilterRowValues} />
+            <Fields />
           </thead>
           <tbody>
             {loading ? (
@@ -219,56 +172,11 @@ function App() {
                 <h4 className="fst-italic text-center">(Empty List)</h4>
               </div>
             )}
-            <tr>
-              <th>
-                <button
-                  className="btn btn-outline-dark shadow-sm fs-6 p-0 px-1"
-                  onClick={addRow}
-                >
-                  Add
-                </button>
-              </th>
-
-              <td>
-                <input
-                  type="text"
-                  name="cName"
-                  value={newRow.cName}
-                  onChange={handleNewRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="pName"
-                  value={newRow.pName}
-                  onChange={handleNewRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="type"
-                  value={newRow.type}
-                  onChange={handleNewRowValues}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="mpr"
-                  value={newRow.mpr}
-                  onChange={handleNewRowValues}
-                />
-              </td>
-              <td>
-                <CSVLink data={rows}>
-                  <button className="btn btn-outline-dark shadow-sm fs-6 p-0 px-1 ms-4">
-                    Csv
-                  </button>
-                </CSVLink>
-              </td>
-            </tr>
+            <AddRow
+              handleNewRowValues={handleNewRowValues}
+              addRow={addRow}
+              rows={rows}
+            />
           </tbody>
         </table>
       </div>

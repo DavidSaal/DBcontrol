@@ -1,4 +1,5 @@
 import React from "react";
+import Fields from "../Fields";
 
 const Modal = (props) => {
   return (
@@ -25,14 +26,7 @@ const Modal = (props) => {
           <div className="card p-3">
             <table className="table">
               <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Customer name</th>
-                  <th scope="col">Partner name</th>
-                  <th scope="col">Type of work</th>
-                  <th scope="col">N° MPR file</th>
-                  <th scope="col"></th>
-                </tr>
+                <Fields />
               </thead>
               <tbody>
                 <tr>

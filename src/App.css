@@ -15,3 +15,7 @@
 input {
   width: 50%;
 }
+.outline-success {
+  color: #198754;
+  border-color: #198754;
+}
