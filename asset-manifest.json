@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/DBcontrol/static/css/main.4bdb3e55.chunk.css",
-    "main.js": "/DBcontrol/static/js/main.aa3271f6.chunk.js",
-    "main.js.map": "/DBcontrol/static/js/main.aa3271f6.chunk.js.map",
+    "main.js": "/DBcontrol/static/js/main.69e2d12d.chunk.js",
+    "main.js.map": "/DBcontrol/static/js/main.69e2d12d.chunk.js.map",
     "runtime-main.js": "/DBcontrol/static/js/runtime-main.8d15c90d.js",
     "runtime-main.js.map": "/DBcontrol/static/js/runtime-main.8d15c90d.js.map",
     "static/css/2.800be05e.chunk.css": "/DBcontrol/static/css/2.800be05e.chunk.css",
-    "static/js/2.c446180b.chunk.js": "/DBcontrol/static/js/2.c446180b.chunk.js",
-    "static/js/2.c446180b.chunk.js.map": "/DBcontrol/static/js/2.c446180b.chunk.js.map",
+    "static/js/2.08a22b92.chunk.js": "/DBcontrol/static/js/2.08a22b92.chunk.js",
+    "static/js/2.08a22b92.chunk.js.map": "/DBcontrol/static/js/2.08a22b92.chunk.js.map",
     "index.html": "/DBcontrol/index.html",
     "static/css/2.800be05e.chunk.css.map": "/DBcontrol/static/css/2.800be05e.chunk.css.map",
     "static/css/main.4bdb3e55.chunk.css.map": "/DBcontrol/static/css/main.4bdb3e55.chunk.css.map",
-    "static/js/2.c446180b.chunk.js.LICENSE.txt": "/DBcontrol/static/js/2.c446180b.chunk.js.LICENSE.txt",
+    "static/js/2.08a22b92.chunk.js.LICENSE.txt": "/DBcontrol/static/js/2.08a22b92.chunk.js.LICENSE.txt",
     "static/media/logo.3b0495ec.png": "/DBcontrol/static/media/logo.3b0495ec.png"
   },
   "entrypoints": [
     "static/js/runtime-main.8d15c90d.js",
     "static/css/2.800be05e.chunk.css",
-    "static/js/2.c446180b.chunk.js",
+    "static/js/2.08a22b92.chunk.js",
     "static/css/main.4bdb3e55.chunk.css",
-    "static/js/main.aa3271f6.chunk.js"
+    "static/js/main.69e2d12d.chunk.js"
   ]
 }
