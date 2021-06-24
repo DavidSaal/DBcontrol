@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { CSVLink } from "react-csv";
 
 const AddRow = (props) => {
+  var isEmpty = !Object.values(props.newRow).every((v) => v === "");
+  console.log(isEmpty);
   return (
     <tr>
       <th>
         <button
           className="btn btn-outline-dark shadow-sm fs-6 p-0 px-1"
-          onClick={props.addRow}
+          onClick={isEmpty ? props.addRow : props.setEmptyMessage(true)}
         >
           Add
         </button>
       </th>
-
       <td>
         <input
           type="text"
@@ -21,6 +22,7 @@ const AddRow = (props) => {
           onChange={props.handleNewRowValues}
         />
       </td>
+
       <td>
         <input
           type="text"

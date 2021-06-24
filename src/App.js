@@ -4,6 +4,7 @@ import Filter from "./components/Filter";
 import Header from "./components/Header";
 import AddRow from "./components/AddRow";
 import Fields from "./components/Fields";
+import Skeleton from "react-loading-skeleton";
 
 import "./App.css";
 
@@ -22,6 +23,7 @@ function App() {
     name: "",
     value: "",
   });
+  const [emptyMessage, setEmptyMessage] = useState(false);
   var inputElement = useRef(null);
 
   const fetchData = async () => {
@@ -44,6 +46,7 @@ function App() {
   }, [editRowClick]);
 
   const handleNewRowValues = (event) => {
+    setEmptyMessage(false);
     const { name, value } = event.target;
     setNewRow({ ...newRow, [name]: value });
   };
@@ -59,7 +62,6 @@ function App() {
   };
 
   const addRow = async () => {
-    setLoading(true);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,11 +73,9 @@ function App() {
     } else {
       res.status === 404 && alert("Error saving to database.");
     }
-    setLoading(false);
   };
 
   const updatedRow = async () => {
-    setLoading(true);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -87,11 +87,9 @@ function App() {
     } else {
       res.status === 404 && alert("Error saving to database.");
     }
-    setLoading(false);
   };
 
   const deleteRow = async (event) => {
-    setLoading(true);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -102,11 +100,10 @@ function App() {
     } else {
       res.status === 405 && alert("Error deleting.");
     }
-    setLoading(false);
   };
 
   return (
-    <div className="container">
+    <div className="container mb-4">
       <Header />
       <div className="card p-3">
         <table className="table">
@@ -116,7 +113,37 @@ function App() {
           </thead>
           <tbody>
             {loading ? (
-              <p className="fs-4 text-center">Loading..</p>
+              <tr>
+                <td></td>
+                <td>
+                  <Skeleton
+                    variant="rect"
+                    className="w-100 rounded-0 my-2"
+                    count={rows[rows.length - 1] ? 1 : 3}
+                  />
+                </td>
+                <td>
+                  <Skeleton
+                    variant="rect"
+                    className="w-100 rounded-0 my-2"
+                    count={rows[rows.length - 1] ? 1 : 3}
+                  />
+                </td>
+                <td>
+                  <Skeleton
+                    variant="rect"
+                    className="w-100 rounded-0 my-2"
+                    count={rows[rows.length - 1] ? 1 : 3}
+                  />
+                </td>
+                <td>
+                  <Skeleton
+                    rect={true}
+                    className="w-100 rounded-0 my-2"
+                    count={rows[rows.length - 1] ? 1 : 3}
+                  />
+                </td>
+              </tr>
             ) : rows.length > 0 ? (
               rows
                 .filter((row) =>
@@ -172,13 +199,22 @@ function App() {
                 <h4 className="fst-italic text-center">(Empty List)</h4>
               </div>
             )}
+          </tbody>
+          <thead>
             <AddRow
               handleNewRowValues={handleNewRowValues}
+              newRow={newRow}
+              setEmptyMessage={setEmptyMessage}
               addRow={addRow}
               rows={rows}
             />
-          </tbody>
+          </thead>
         </table>
+        {emptyMessage && (
+          <p className="display-6 text-danger text-center my-0">
+            At least one field must be filled out.
+          </p>
+        )}
       </div>
     </div>
   );
