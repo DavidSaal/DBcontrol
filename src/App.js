@@ -5,12 +5,15 @@ import Header from "./components/Header";
 import AddRow from "./components/AddRow";
 import Fields from "./components/Fields";
 import Skeleton from "react-loading-skeleton";
+import Loader from "react-loader-spinner";
 
 import "./App.css";
 
 function App() {
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
+  const [newRowLoading, setNewRowLoading] = useState(false);
+  const [deleteRowLoading, setDeleteRowLoading] = useState(0);
   const [newRow, setNewRow] = useState({
     cName: "",
     pName: "",
@@ -34,14 +37,14 @@ function App() {
 
   useEffect(() => {
     fetchData().then((rows) => {
-      setLoading(false);
+      setFirstLoading(false);
       setRows(rows);
     });
   }, []);
 
   useEffect(() => {
     const canvas = inputElement.current;
-    canvas && canvas.click();
+    //canvas && canvas.click();
     setEditRowClick(false);
   }, [editRowClick]);
 
@@ -62,6 +65,7 @@ function App() {
   };
 
   const addRow = async () => {
+    setNewRowLoading(true);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -73,6 +77,7 @@ function App() {
     } else {
       res.status === 404 && alert("Error saving to database.");
     }
+    setNewRowLoading(false);
   };
 
   const updatedRow = async () => {
@@ -90,6 +95,7 @@ function App() {
   };
 
   const deleteRow = async (event) => {
+    setDeleteRowLoading(event.target.id);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -105,43 +111,27 @@ function App() {
   return (
     <div className="container mb-4">
       <Header />
-      <div className="card p-3">
+      <div className="card p-3 pb-0">
         <table className="table">
           <thead>
             <Filter handleFilterRowValues={handleFilterRowValues} />
             <Fields />
           </thead>
           <tbody>
-            {loading ? (
+            {firstLoading ? (
               <tr>
                 <td></td>
                 <td>
-                  <Skeleton
-                    variant="rect"
-                    className="w-100 rounded-0 my-2"
-                    count={rows[rows.length - 1] ? 1 : 3}
-                  />
+                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
                 </td>
                 <td>
-                  <Skeleton
-                    variant="rect"
-                    className="w-100 rounded-0 my-2"
-                    count={rows[rows.length - 1] ? 1 : 3}
-                  />
+                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
                 </td>
                 <td>
-                  <Skeleton
-                    variant="rect"
-                    className="w-100 rounded-0 my-2"
-                    count={rows[rows.length - 1] ? 1 : 3}
-                  />
+                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
                 </td>
                 <td>
-                  <Skeleton
-                    rect={true}
-                    className="w-100 rounded-0 my-2"
-                    count={rows[rows.length - 1] ? 1 : 3}
-                  />
+                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
                 </td>
               </tr>
             ) : rows.length > 0 ? (
@@ -153,51 +143,106 @@ function App() {
                         .includes(filter.value.toLowerCase())
                     : row
                 )
-                .map((row, index) => (
-                  <tr key={row._id}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{row.cName}</td>
-                    <td>{row.pName}</td>
-                    <td>{row.type}</td>
-                    <td>{row.mpr}</td>
-                    <td>
-                      <Modal
-                        rowToUpdate={rowToUpdate}
-                        rowToUpdateFunc={handleUpdateRowValues}
-                        updatedRow={updatedRow}
-                      />
-                      <button
-                        type="button"
-                        className="btn zoom"
-                        aria-label="Edit"
-                        onClick={() => (
-                          setRowToUpdate(row), setEditRowClick(true)
-                        )}
-                      >
-                        ✎
-                      </button>
-                      <button
-                        type="button"
-                        className="d-none"
-                        ref={inputElement}
-                        id={row._id}
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                      ></button>
-                      <button
-                        type="button"
-                        className="btn-close fs-8 zoom"
-                        aria-label="Close"
-                        id={row._id}
-                        onClick={deleteRow}
-                      ></button>
-                    </td>
-                  </tr>
-                ))
+                .map((row, index) =>
+                  deleteRowLoading === row._id ? (
+                    <tr key={row._id}>
+                      <td></td>
+                      <td>
+                        <Loader
+                          type="Oval"
+                          color="#00BFFF"
+                          height={30}
+                          width={30}
+                        />
+                      </td>
+                      <td>
+                        <Loader
+                          type="Oval"
+                          color="#00BFFF"
+                          height={30}
+                          width={30}
+                        />
+                      </td>
+                      <td>
+                        <Loader
+                          type="Oval"
+                          color="#00BFFF"
+                          height={30}
+                          width={30}
+                        />
+                      </td>
+                      <td>
+                        <Loader
+                          type="Oval"
+                          color="#00BFFF"
+                          height={30}
+                          width={30}
+                        />
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={row._id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{row.cName}</td>
+                      <td>{row.pName}</td>
+                      <td>{row.type}</td>
+                      <td>{row.mpr}</td>
+                      <td>
+                        <Modal
+                          rowToUpdate={rowToUpdate}
+                          rowToUpdateFunc={handleUpdateRowValues}
+                          updatedRow={updatedRow}
+                        />
+                        <button
+                          type="button"
+                          className="btn zoom"
+                          aria-label="Edit"
+                          onClick={() => (
+                            setRowToUpdate(row), setEditRowClick(true)
+                          )}
+                        >
+                          ✎
+                        </button>
+                        <button
+                          type="button"
+                          className="d-none"
+                          ref={inputElement}
+                          id={row._id}
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                        ></button>
+                        <button
+                          type="button"
+                          className="btn-close fs-8 zoom"
+                          aria-label="Close"
+                          id={row._id}
+                          onClick={deleteRow}
+                        ></button>
+                      </td>
+                    </tr>
+                  )
+                )
             ) : (
               <div className="justify-content-center d-flex text-center">
                 <h4 className="fst-italic text-center">(Empty List)</h4>
               </div>
+            )}
+            {newRowLoading && (
+              <tr>
+                <th scope="row">{rows.length + 1}</th>
+                <td>
+                  <Skeleton className="w-75 rounded-0" />
+                </td>
+                <td>
+                  <Skeleton className="w-75 rounded-0" />
+                </td>
+                <td>
+                  <Skeleton className="w-75 rounded-0" />
+                </td>
+                <td>
+                  <Skeleton className="w-75 rounded-0" />
+                </td>
+              </tr>
             )}
           </tbody>
           <thead>

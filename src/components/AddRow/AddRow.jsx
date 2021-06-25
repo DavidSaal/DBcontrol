@@ -3,13 +3,12 @@ import { CSVLink } from "react-csv";
 
 const AddRow = (props) => {
   var isEmpty = !Object.values(props.newRow).every((v) => v === "");
-  console.log(isEmpty);
   return (
     <tr>
       <th>
         <button
           className="btn btn-outline-dark shadow-sm fs-6 p-0 px-1"
-          onClick={isEmpty ? props.addRow : props.setEmptyMessage(true)}
+          onClick={isEmpty ? props.addRow : () => props.setEmptyMessage(true)}
         >
           Add
         </button>
