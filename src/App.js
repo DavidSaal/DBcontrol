@@ -4,8 +4,9 @@ import Filter from "./components/Filter";
 import Header from "./components/Header";
 import AddRow from "./components/AddRow";
 import Fields from "./components/Fields";
-import Skeleton from "react-loading-skeleton";
-import Loader from "react-loader-spinner";
+import Spinner from "./components/Spinner";
+import NewRowSkeleton from "./components/NewRowSkeleton";
+import FirstLoadinSkeleton from "./components/FirstLoadinSkeleton";
 
 import "./App.css";
 
@@ -44,7 +45,7 @@ function App() {
 
   useEffect(() => {
     const canvas = inputElement.current;
-    //canvas && canvas.click();
+    canvas && canvas.click();
     setEditRowClick(false);
   }, [editRowClick]);
 
@@ -81,6 +82,7 @@ function App() {
   };
 
   const updatedRow = async () => {
+    setDeleteRowLoading(rowToUpdate._id);
     const res = await fetch("https://dbcontrol-server.herokuapp.com", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -92,6 +94,7 @@ function App() {
     } else {
       res.status === 404 && alert("Error saving to database.");
     }
+    setDeleteRowLoading(0);
   };
 
   const deleteRow = async (event) => {
@@ -119,21 +122,7 @@ function App() {
           </thead>
           <tbody>
             {firstLoading ? (
-              <tr>
-                <td></td>
-                <td>
-                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0 my-2" count={3} />
-                </td>
-              </tr>
+              <FirstLoadinSkeleton />
             ) : rows.length > 0 ? (
               rows
                 .filter((row) =>
@@ -145,41 +134,7 @@ function App() {
                 )
                 .map((row, index) =>
                   deleteRowLoading === row._id ? (
-                    <tr key={row._id}>
-                      <td></td>
-                      <td>
-                        <Loader
-                          type="Oval"
-                          color="#00BFFF"
-                          height={30}
-                          width={30}
-                        />
-                      </td>
-                      <td>
-                        <Loader
-                          type="Oval"
-                          color="#00BFFF"
-                          height={30}
-                          width={30}
-                        />
-                      </td>
-                      <td>
-                        <Loader
-                          type="Oval"
-                          color="#00BFFF"
-                          height={30}
-                          width={30}
-                        />
-                      </td>
-                      <td>
-                        <Loader
-                          type="Oval"
-                          color="#00BFFF"
-                          height={30}
-                          width={30}
-                        />
-                      </td>
-                    </tr>
+                    <Spinner />
                   ) : (
                     <tr key={row._id}>
                       <th scope="row">{index + 1}</th>
@@ -223,27 +178,13 @@ function App() {
                   )
                 )
             ) : (
-              <div className="justify-content-center d-flex text-center">
-                <h4 className="fst-italic text-center">(Empty List)</h4>
-              </div>
-            )}
-            {newRowLoading && (
               <tr>
-                <th scope="row">{rows.length + 1}</th>
                 <td>
-                  <Skeleton className="w-75 rounded-0" />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0" />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0" />
-                </td>
-                <td>
-                  <Skeleton className="w-75 rounded-0" />
+                  <h4 className="fst-italic text-center">(Empty List)</h4>
                 </td>
               </tr>
             )}
+            {newRowLoading && <NewRowSkeleton index={rows.length + 1} />}
           </tbody>
           <thead>
             <AddRow

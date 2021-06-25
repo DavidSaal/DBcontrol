@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../images/logo.png";
 
-const Header = (props) => {
+const Header = () => {
   return (
     <div className="text-center my-5">
       <div className="card shadow my-2">
@@ -10,8 +10,7 @@ const Header = (props) => {
           <img
             src={logo}
             alt="Logo"
-            className=""
-            Style="width:100px; height:90px"
+            style={{ width: "100px", height: "90px" }}
           />
         </div>
         <p className="display-6 fs-6">By David Saal</p>
